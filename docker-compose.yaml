@@ -1,0 +1,20 @@
+# cretae compose file with bind mount for local development and anonymous volume for node_modules
+
+version: '3.8'
+
+services:
+  node:
+    build: ./
+    # build: 
+    #   context: ./nodejs
+    #   dockerfile: Dockerfile
+    image: my-app
+    ports:
+      - 3000:3000
+    # volumes:
+    #   - ./nodejs/node_modules:/app/node_modules
+    volumes: 
+      - ./:/app
+      - /app/node_modules
+    # env_file:
+    #   - ./nodejs/.env

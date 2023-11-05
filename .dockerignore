@@ -1,0 +1,8 @@
+node_modules
+Dockerfile
+dist
+
+yarn-error.log
+
+# .env
+# .env.secret
