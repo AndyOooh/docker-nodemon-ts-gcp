@@ -1,0 +1,51 @@
+# name: CD Pipeline for GCP Deployment
+
+# run-name: Build on push to any branch except main
+
+# on:
+#   push:
+#     branches:
+#       - main # Adjust as per your preference
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Set up GCP Authentication
+#         env:
+#           GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }} # Store your GCP Service Account key as a GitHub secret
+#         run: |
+#           echo "$GCP_SA_KEY" | base64 --decode > gcp_key.json
+#           gcloud auth activate-service-account --key-file=gcp_key.json
+
+#       - name: Build and push Docker image
+#         env:
+#           GCP_PROJECT_ID: your-gcp-project-id # Replace with your GCP Project ID
+#         run: |
+#           docker build -t gcr.io/$GCP_PROJECT_ID/my-app:${{ github.sha }} .
+#           docker push gcr.io/$GCP_PROJECT_ID/my-app:${{ github.sha }}
+
+#       # - name: Create new instance template based on existing one
+#       #   env:
+#       #     CURRENT_TEMPLATE_NAME: your-current-template-name # Replace with your current template name
+#       #     NEW_TEMPLATE_NAME: new-template-name-${{ github.sha }} # This ensures each new template has a unique name
+#       #   run: |
+#       #     gcloud compute instance-templates describe $CURRENT_TEMPLATE_NAME > current_template.yaml
+#       #     sed -i "s|gcr.io/$GCP_PROJECT_ID/my-app:.*|gcr.io/$GCP_PROJECT_ID/my-app:${{ github.sha }}|g" current_template.yaml
+#       #     gcloud compute instance-templates create $NEW_TEMPLATE_NAME --source-instance-template=current_template.yaml
+
+#       # - name: Update Managed Instance Group (MIG) with the new template
+#       #   env:
+#       #     INSTANCE_GROUP_NAME: your-instance-group-name # Replace with your MIG name
+#       #   run: |
+#       #     gcloud compute instance-groups managed set-instance-template $INSTANCE_GROUP_NAME --template=$NEW_TEMPLATE_NAME
+#       #     gcloud compute instance-groups managed rolling-action start-update $INSTANCE_GROUP_NAME --version template=$NEW_TEMPLATE_NAME
+
+#       - name: Cleanup (Optional)
+#         run: |
+#           rm gcp_key.json
+#           # rm current_template.yaml

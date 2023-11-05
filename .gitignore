@@ -2,6 +2,8 @@ node_modules
 
 dist
 
+# GCP workflow-identity-federation
+gha-creds-*.json
 
 # yarn-error.log
 

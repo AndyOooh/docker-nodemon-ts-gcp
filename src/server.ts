@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.get('/ping', (req: Request, res: Response) => {
-  const repsponse = 'it works 1';
+  const repsponse = 'it works yayy!';
   console.log('ping received, response: ', repsponse);
   res.send(repsponse);
 });
