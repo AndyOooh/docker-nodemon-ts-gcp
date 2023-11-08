@@ -9,7 +9,7 @@ on:
   #     - main # Adjust as per your preference
 
 jobs:
-  get-secret:
+  build-and-push-image:
     runs-on: ubuntu-latest
     # Add "id-token" with the intended permissions (allegedly mandatory).
     permissions:
@@ -47,7 +47,7 @@ jobs:
         env:
           GCP_PROJECT_ID: tranquil-app-397220 # Replace with your GCP Project ID
           REPO_NAME: my-app # Replace with your Artifact Registry repository name
-          IMAGE_NAME: NODE-APP-1 # Replace with your Docker image name
+          IMAGE_NAME: node_app # Replace with your Docker image name
           REGION: asia-southeast1 # Replace with Artifact Registry repo region
         run: |
           # Container Registry
