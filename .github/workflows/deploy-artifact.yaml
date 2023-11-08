@@ -1,4 +1,4 @@
-name: Get GCP secret
+name: Deploy Docker image to Artifact Registry
 
 run-name: Using workload federated identity with GH
 
