@@ -46,8 +46,8 @@ jobs:
       - name: Build and push Docker image
         env:
           GCP_PROJECT_ID: tranquil-app-397220 # Replace with your GCP Project ID
-          REPO-NAME: my-app # Replace with your Artifact Registry repository name
-          IMAGE-NAME: NODE-APP-1 # Replace with your Docker image name
+          REPO_NAME: my-app # Replace with your Artifact Registry repository name
+          IMAGE_NAME: NODE-APP-1 # Replace with your Docker image name
           REGION: asia-southeast1 # Replace with Artifact Registry repo region
         run: |
           # Container Registry
@@ -55,5 +55,5 @@ jobs:
           # docker push gcr.io/$GCP_PROJECT_ID/$IMAGE-NAME:${{ github.sha }}
 
           # Artifact Registry
-          docker build -t $REGION-docker.pkg.dev/$GCP_PROJECT_ID/$REPO-NAME/$IMAGE-NAME${{ github.sha }} .
-          docker push $REGION-docker.pkg.dev/$GCP_PROJECT_ID/$REPO-NAME/$IMAGE-NAME${{ github.sha }}
+          docker build -t $REGION-docker.pkg.dev/$GCP_PROJECT_ID/$REPO_NAME/$IMAGE_NAME:${{ github.sha }} .
+          docker push $REGION-docker.pkg.dev/$GCP_PROJECT_ID/$REPO_NAME/$IMAGE_NAME:${{ github.sha }}
