@@ -1,0 +1,59 @@
+name: Get GCP secret
+
+run-name: Using workload federated identity with GH
+
+on:
+  workflow_dispatch
+  # push:
+  #   branches:
+  #     - main # Adjust as per your preference
+
+jobs:
+  get-secret:
+    runs-on: ubuntu-latest
+    # Add "id-token" with the intended permissions (allegedly mandatory).
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      # actions/checkout MUST come before auth
+      - name: Checkout code
+        uses: 'actions/checkout@v4'
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/1046457465833/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: 'github-sa@tranquil-app-397220.iam.gserviceaccount.com'
+
+      # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+
+      # Now you can run gcloud commands authenticated as the impersonated service account.
+      # - id: 'gcloud'
+      #   name: 'gcloud'
+      #   run: |-
+      #     gcloud secrets versions access "latest" --secret "secret-2"
+
+      - name: Configure Docker to use the gcloud command-line tool as a credential helper
+        run: |
+          # gcloud auth configure-docker
+          gcloud auth configure-docker asia-southeast1-docker.pkg.dev
+
+      - name: Build and push Docker image
+        env:
+          GCP_PROJECT_ID: tranquil-app-397220 # Replace with your GCP Project ID
+          REPO-NAME: my-app # Replace with your Artifact Registry repository name
+          IMAGE-NAME: NODE-APP-1 # Replace with your Docker image name
+          REGION: asia-southeast1 # Replace with Artifact Registry repo region
+        run: |
+          # Container Registry
+          # docker build -t gcr.io/$GCP_PROJECT_ID/$IMAGE-NAME:${{ github.sha }} .
+          # docker push gcr.io/$GCP_PROJECT_ID/$IMAGE-NAME:${{ github.sha }}
+
+          # Artifact Registry
+          docker build -t $REGION-docker.pkg.dev/$GCP_PROJECT_ID/$REPO-NAME/$IMAGE-NAME${{ github.sha }} .
+          docker push $REGION-docker.pkg.dev/$GCP_PROJECT_ID/$REPO-NAME/$IMAGE-NAME${{ github.sha }}
