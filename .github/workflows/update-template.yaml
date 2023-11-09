@@ -60,15 +60,13 @@ jobs:
       #     --boot-disk-type=pd-balanced
       #     --boot-disk-device-name=instance-2
       #     --region=asia-southeast1
-
-          # --region=projects/tranquil-app-397220/regions/asia-southeast1
-          # --create-disk=auto-delete=yes,device-name=instance-template-1,image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15,mode=rw,size=10,type=pd-balanced
-
+      # --region=projects/tranquil-app-397220/regions/asia-southeast1
+      # --create-disk=auto-delete=yes,device-name=instance-template-1,image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15,mode=rw,size=10,type=pd-balanced
       - name: Update instance group
         # Only runs if teh above step finished successfully
         # if: success()
         # run: echo "Update instance group"
         run:
           gcloud compute instance-groups managed rolling-action start-update example-managed-instance-group
-          --version=$TEMPLATE_NAME
+          --version='template=${{ env.TEMPLATE_NAME }}'
         # --version='template=projects/example-project/regions/us-central1/instanceTemplates/example-regional-instance-template'
