@@ -43,6 +43,7 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v1'
         with:
           install_components: 'beta'
+          # project_id: ${{ env.GCP_PROJECT_NAME }}
 
       - name: Create new instance template
         run:
@@ -54,7 +55,7 @@ jobs:
           --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append
           --tags=lala3000,http-server,https-server
           --container-image=$REGION-docker.pkg.dev/$GCP_PROJECT_NAME/$REPO_NAME/$IMAGE_NAME:$IMAGE_TAG --container-restart-policy=always
-          --create-disk=auto-delete=yes,boot=yes,device-name=instance-template-1,image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15,mode=rw,size=10,type=pd-balanced
+          --disk=auto-delete=yes,boot=yes,device-name=instance-template-1,image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15,mode=rw,size=10,type=pd-balanced
           --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --labels=container-vm=cos-stable-109-17800-66-15
 
       - name: Update instance group
