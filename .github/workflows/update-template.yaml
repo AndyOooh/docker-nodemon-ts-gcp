@@ -66,7 +66,9 @@ jobs:
         # if: success()
         # run: echo "Update instance group"
         run:
-          gcloud compute instance-groups managed rolling-action start-update instance-group-1
-          --version='template=${{ env.TEMPLATE_NAME }}'
-          # --region=global
+          gcloud beta compute instance-groups managed rolling-action start-update instance-group-1 --project=tranquil-app-397220 --type='opportunistic' --max-surge=1 --max-unavailable=1 --min-ready=0
+          --minimal-action='replace' --most-disruptive-allowed-action='' --replacement-method='substitute' --version=template=projects/tranquil-app-397220/global/instanceTemplates/instance-template-6
+          --zone=asia-southeast1-b
+          # gcloud compute instance-groups managed rolling-action start-update instance-group-1
+          # --version='template=${{ env.TEMPLATE_NAME }}' --region=global
         # --version='template=projects/example-project/regions/us-central1/instanceTemplates/example-regional-instance-template'
