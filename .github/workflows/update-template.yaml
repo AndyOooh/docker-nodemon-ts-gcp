@@ -67,6 +67,6 @@ jobs:
         # if: success()
         # run: echo "Update instance group"
         run:
-          gcloud compute instance-groups managed rolling-action start-update example-managed-instance-group
+          gcloud compute instance-groups managed rolling-action start-update instance-group-1
           --version='template=${{ env.TEMPLATE_NAME }}'
         # --version='template=projects/example-project/regions/us-central1/instanceTemplates/example-regional-instance-template'
