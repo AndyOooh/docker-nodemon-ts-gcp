@@ -1,4 +1,4 @@
-name: Deploy Docker image to Artifact Registry
+name: Update instance template
 
 run-name: Using workload federated identity with GH
 
@@ -16,7 +16,7 @@ env:
   TEMPLATE_NAME: instance-template-2 # Replace with your instance template name
 
 jobs:
-  build-and-push-image:
+  create-instance-template-and-update-instance-group:
     runs-on: ubuntu-latest
     # Add "id-token" with the intended permissions (allegedly mandatory).
     permissions:
@@ -39,7 +39,7 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
 
-      - name: Cretae new instance template
+      - name: Create new instance template
         run:
           gcloud beta compute instance-templates create-with-container $TEMPLATE_NAME --project=$GCP_PROJECT_NAME
           --machine-type=e2-micro --network-interface=network=default,network-tier=PREMIUM
