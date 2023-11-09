@@ -42,7 +42,7 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
         with:
-          components: beta
+          install_components: 'beta'
 
       - name: Create new instance template
         run:
