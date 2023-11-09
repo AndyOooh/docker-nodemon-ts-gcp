@@ -60,7 +60,7 @@ jobs:
           --boot-disk-size=10GB
           --boot-disk-type=pd-balanced
           --boot-disk-device-name=instance-2
-          --instance-template-region=projects/tranquil-app-397220/regions/asia-southeast1
+          --region=asia-southeast1
           # --create-disk=auto-delete=yes,device-name=instance-template-1,image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15,mode=rw,size=10,type=pd-balanced
 
           # gcloud beta compute instance-templates create-with-container instance-template-2
