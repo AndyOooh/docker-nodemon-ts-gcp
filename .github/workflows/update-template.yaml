@@ -65,7 +65,8 @@ jobs:
         # Only runs if teh above step finished successfully
         # if: success()
         # run: echo "Update instance group"
-        run: gcloud compute instance-groups managed rolling-action start-update instance-group-1 
-          --region=$REGION
+        run:
+          gcloud compute instance-groups managed rolling-action start-update instance-group-1
           --version='template=${{ env.TEMPLATE_NAME }}'
+          # --region=global
         # --version='template=projects/example-project/regions/us-central1/instanceTemplates/example-regional-instance-template'
