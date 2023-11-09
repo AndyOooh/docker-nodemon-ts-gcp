@@ -12,6 +12,7 @@ env:
   GCP_PROJECT_NAME: tranquil-app-397220 # Replace with your GCP Project ID
   REPO_NAME: my-app # Replace with your Artifact Registry repository name
   IMAGE_NAME: node_app # Replace with your Docker image name
+  IMAGE_TAG: 60c0ac92b5706c7b74181691a2694bac778b01e8 # Replace with your Docker image tag
   REGION: asia-southeast1 # Replace with Artifact Registry repo region
   TEMPLATE_NAME: instance-template-2 # Replace with your instance template name
 
@@ -47,7 +48,7 @@ jobs:
           --maintenance-policy=MIGRATE --provisioning-model=STANDARD --service-account=1046457465833-compute@developer.gserviceaccount.com
           --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append
           --tags=lala3000,http-server,https-server
-          --container-image=$REGION-docker.pkg.dev/$GCP_PROJECT_NAME/$REPO_NAME/$IMAGE_NAME:c96b9166fcb4fca3a9afbf2710b2fd43c270369 --container-restart-policy=always
+          --container-image=$REGION-docker.pkg.dev/$GCP_PROJECT_NAME/$REPO_NAME/$IMAGE_NAME:$IMAGE_TAG --container-restart-policy=always
           --create-disk=auto-delete=yes,boot=yes,device-name=instance-template-1,image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15,mode=rw,size=10,type=pd-balanced
           --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --labels=container-vm=cos-stable-109-17800-66-15
 
