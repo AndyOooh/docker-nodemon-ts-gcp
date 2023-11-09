@@ -66,16 +66,16 @@ jobs:
         # if: success()
         # run: echo "Update instance group"
         run:
-          gcloud beta compute instance-groups managed rolling-action start-update instance-group-1 \
-          --project=tranquil-app-397220 \
-          --type='opportunistic' \
-          --max-surge=1 \
-          --max-unavailable=1 \
-          --min-ready=0 \
-          --minimal-action='replace' \
-          --most-disruptive-allowed-action='replace' \
-          --replacement-method='substitute' \
-          --version=template=projects/tranquil-app-397220/global/instanceTemplates/instance-template-6 \
+          gcloud beta compute instance-groups managed rolling-action start-update instance-group-1
+          --project=tranquil-app-397220
+          --type='opportunistic'
+          --max-surge=1
+          --max-unavailable=1
+          --min-ready=0
+          --minimal-action='replace'
+          --most-disruptive-allowed-action='replace'
+          --replacement-method='substitute'
+          --version=template=projects/tranquil-app-397220/global/instanceTemplates/instance-template-6
           --zone=asia-southeast1-b
           # gcloud beta compute instance-groups managed rolling-action start-update instance-group-1 --project=tranquil-app-397220 --type='opportunistic' --max-surge=1 --max-unavailable=1 --min-ready=0
           # --minimal-action='replace' --most-disruptive-allowed-action='' --replacement-method='substitute' --version=template=projects/tranquil-app-397220/global/instanceTemplates/instance-template-6
