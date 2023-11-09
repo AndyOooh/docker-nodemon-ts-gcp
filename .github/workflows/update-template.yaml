@@ -41,11 +41,13 @@ jobs:
       # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
+        with:
+          components: beta
 
       - name: Create new instance template
         run:
-          # gcloud beta compute instance-templates create-with-container $TEMPLATE_NAME --project=$GCP_PROJECT_NAME
-          gcloud compute instance-templates create-with-container $TEMPLATE_NAME --project=$GCP_PROJECT_NAME
+          # gcloud compute instance-templates create-with-container $TEMPLATE_NAME --project=$GCP_PROJECT_NAME
+          gcloud beta compute instance-templates create-with-container $TEMPLATE_NAME --project=$GCP_PROJECT_NAME
           --machine-type=e2-micro --network-interface=network=default,network-tier=PREMIUM
           --instance-template-region=projects/$GCP_PROJECT_NAME/regions/$REGION
           --maintenance-policy=MIGRATE --provisioning-model=STANDARD --service-account=1046457465833-compute@developer.gserviceaccount.com
