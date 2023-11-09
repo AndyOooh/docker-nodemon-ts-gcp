@@ -14,7 +14,7 @@ env:
   IMAGE_NAME: node_app # Replace with your Docker image name
   IMAGE_TAG: 60c0ac92b5706c7b74181691a2694bac778b01e8 # Replace with your Docker image tag
   REGION: asia-southeast1 # Replace with Artifact Registry repo region
-  TEMPLATE_NAME: instance-template-2 # Replace with your instance template name
+  TEMPLATE_NAME: instance-template-3 # Replace with your instance template name
 
 jobs:
   create-instance-template-and-update-instance-group:
