@@ -1,6 +1,6 @@
 name: Deploy Docker image to Artifact Registry
 
-run-name: Using workload federated identity with GH
+# run-name: Using workload federated identity with GH
 
 on:
   workflow_dispatch
