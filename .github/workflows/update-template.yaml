@@ -1,0 +1,57 @@
+name: Deploy Docker image to Artifact Registry
+
+run-name: Using workload federated identity with GH
+
+on:
+  workflow_dispatch
+  # push:
+  #   branches:
+  #     - main # Adjust as per your preference
+
+env:
+  GCP_PROJECT_NAME: tranquil-app-397220 # Replace with your GCP Project ID
+  REPO_NAME: my-app # Replace with your Artifact Registry repository name
+  IMAGE_NAME: node_app # Replace with your Docker image name
+  REGION: asia-southeast1 # Replace with Artifact Registry repo region
+  TEMPLATE_NAME: instance-template-2 # Replace with your instance template name
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    # Add "id-token" with the intended permissions (allegedly mandatory).
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      # actions/checkout MUST come before auth
+      - name: Checkout code
+        uses: 'actions/checkout@v4'
+
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/1046457465833/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: 'github-sa@$GCP_PROJECT_NAME.iam.gserviceaccount.com'
+
+      # Install gcloud, `setup-gcloud` automatically picks up authentication from `auth`.
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+
+      - name: Cretae new instance template
+        run:
+          gcloud beta compute instance-templates create-with-container $TEMPLATE_NAME --project=$GCP_PROJECT_NAME
+          --machine-type=e2-micro --network-interface=network=default,network-tier=PREMIUM
+          --instance-template-region=projects/$GCP_PROJECT_NAME/regions/$REGION
+          --maintenance-policy=MIGRATE --provisioning-model=STANDARD --service-account=1046457465833-compute@developer.gserviceaccount.com
+          --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append
+          --tags=lala3000,http-server,https-server
+          --container-image=$REGION-docker.pkg.dev/$GCP_PROJECT_NAME/$REPO_NAME/$IMAGE_NAME:c96b9166fcb4fca3a9afbf2710b2fd43c270369 --container-restart-policy=always
+          --create-disk=auto-delete=yes,boot=yes,device-name=instance-template-1,image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15,mode=rw,size=10,type=pd-balanced
+          --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --labels=container-vm=cos-stable-109-17800-66-15
+
+      - name: Update instance group
+        # Only runs if teh above step finished successfully
+        if: success()
+        run: echo "Update instance group"
