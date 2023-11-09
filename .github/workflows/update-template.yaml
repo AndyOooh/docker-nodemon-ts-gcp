@@ -45,44 +45,30 @@ jobs:
           install_components: 'beta'
           # project_id: ${{ env.GCP_PROJECT_NAME }}
 
-      - name: Create new instance template
-        run:
-          # gcloud compute instance-templates create-with-container $TEMPLATE_NAME --project=$GCP_PROJECT_NAME
-          gcloud beta compute instance-templates create-with-container $TEMPLATE_NAME --project=$GCP_PROJECT_NAME
-          --machine-type=e2-micro --network-interface=network=default,network-tier=PREMIUM
-          --maintenance-policy=MIGRATE
-          --service-account=1046457465833-compute@developer.gserviceaccount.com
-          --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append
-          --tags=lala3000,http-server,https-server
-          --container-image=$REGION-docker.pkg.dev/$GCP_PROJECT_NAME/$REPO_NAME/$IMAGE_NAME:$IMAGE_TAG --container-restart-policy=always
-          --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --labels=container-vm=cos-stable-109-17800-66-15
-          --image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15
-          --boot-disk-size=10GB
-          --boot-disk-type=pd-balanced
-          --region=asia-southeast1
-          --boot-disk-device-name=instance-2
+      # - name: Create new instance template
+      #   run:
+      #     gcloud beta compute instance-templates create-with-container $TEMPLATE_NAME --project=$GCP_PROJECT_NAME
+      #     --machine-type=e2-micro --network-interface=network=default,network-tier=PREMIUM
+      #     --maintenance-policy=MIGRATE
+      #     --service-account=1046457465833-compute@developer.gserviceaccount.com
+      #     --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append
+      #     --tags=lala3000,http-server,https-server
+      #     --container-image=$REGION-docker.pkg.dev/$GCP_PROJECT_NAME/$REPO_NAME/$IMAGE_NAME:$IMAGE_TAG --container-restart-policy=always
+      #     --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --labels=container-vm=cos-stable-109-17800-66-15
+      #     --image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15
+      #     --boot-disk-size=10GB
+      #     --boot-disk-type=pd-balanced
+      #     --boot-disk-device-name=instance-2
+      #     --region=asia-southeast1
+
           # --region=projects/tranquil-app-397220/regions/asia-southeast1
           # --create-disk=auto-delete=yes,device-name=instance-template-1,image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15,mode=rw,size=10,type=pd-balanced
 
-          # gcloud beta compute instance-templates create-with-container instance-template-2
-          # --project=tranquil-app-397220
-          # --machine-type=e2-micro
-          # --network-interface=network=default,network-tier=PREMIUM
-          # --instance-template-region=projects/tranquil-app-397220/regions/asia-southeast1
-          # --maintenance-policy=MIGRATE
-          # --provisioning-model=STANDARD
-          # --service-account=1046457465833-compute@developer.gserviceaccount.com
-          # --scopes=https://www.googleapis.com/auth/devstorage.read_only,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/trace.append
-          # --tags=lala3000,http-server,https-server
-          # --container-image=asia-southeast1-docker.pkg.dev/tranquil-app-397220/my-app/node_app:c96b9166fcb4fca3a9afbf2710b2fd43c2703693 --container-restart-policy=always
-          # --create-disk=auto-delete=yes,boot=yes,device-name=instance-template-1,image=projects/cos-cloud/global/images/cos-stable-109-17800-66-15,mode=rw,size=10,type=pd-balanced
-          # --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring --labels=container-vm=cos-stable-109-17800-66-15
-
       - name: Update instance group
         # Only runs if teh above step finished successfully
-        if: success()
-        run: echo "Update instance group"
-        # run:
-        # gcloud compute instance-groups managed rolling-action start-update example-managed-instance-group
-        # --version=$TEMPLATE_NAME
+        # if: success()
+        # run: echo "Update instance group"
+        run:
+          gcloud compute instance-groups managed rolling-action start-update example-managed-instance-group
+          --version=$TEMPLATE_NAME
         # --version='template=projects/example-project/regions/us-central1/instanceTemplates/example-regional-instance-template'
